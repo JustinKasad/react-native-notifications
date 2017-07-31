@@ -14,7 +14,8 @@ public class GcmMessageHandlerService extends GcmListenerService {
     @Override
     public void onMessageReceived(String s, Bundle bundle) {
         Log.d(LOGTAG, "New message from GCM: " + bundle);
-        bundle.putString("title", "@string/GCM_app_name");
+        // Hard-coded app name
+        bundle.putString("title", "MS Buddy");
         bundle.putString("body", bundle.getString("message"));
         try {
             final IPushNotification notification = PushNotification.get(getApplicationContext(), bundle);
