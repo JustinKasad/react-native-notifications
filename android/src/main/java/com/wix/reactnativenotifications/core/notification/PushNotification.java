@@ -57,9 +57,6 @@ public class PushNotification implements IPushNotification {
 
     @Override
     public void onReceived() throws InvalidNotificationException {
-        // Comment this out to stop the notification from appearing in the status bar
-        // This library relies on "title" and "body" properties in the payload which normal GCM payloads do not always have
-        // We are handling this by firing a "local notification" in our app
         postNotification(null);
         notifyReceivedToJS();
     }
