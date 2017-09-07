@@ -139,7 +139,7 @@ public class PushNotification implements IPushNotification {
         return new Notification.Builder(mContext)
                 .setContentTitle(mNotificationProps.getTitle())
                 .setContentText(mNotificationProps.getBody())
-                .setSmallIcon(mContext.getApplicationInfo().icon)
+                .setSmallIcon(R.drawable.msbuddy_white)
                 .setContentIntent(intent)
                 .setDefaults(Notification.DEFAULT_ALL)
                 .setAutoCancel(true);
