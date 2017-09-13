@@ -28,7 +28,7 @@ public class PushNotification implements IPushNotification {
     final protected AppLifecycleFacade mAppLifecycleFacade;
     final protected AppLaunchHelper mAppLaunchHelper;
     final protected JsIOHelper mJsIOHelper;
-    final protected PushNotificationProps mNotificationProps;
+    static protected PushNotificationProps mNotificationProps;
     final protected AppVisibilityListener mAppVisibilityListener = new AppVisibilityListener() {
         @Override
         public void onAppVisible() {
@@ -108,7 +108,7 @@ public class PushNotification implements IPushNotification {
         return new PushNotificationProps(bundle);
     }
 
-    protected void setAsInitialNotification() {
+    public static void setAsInitialNotification() {
         InitialNotificationHolder.getInstance().set(mNotificationProps);
     }
 
