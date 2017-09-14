@@ -5,7 +5,18 @@ import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.Canvas;
+import android.graphics.Color;
+import android.graphics.Paint;
+import android.graphics.PorterDuff;
+import android.graphics.PorterDuffXfermode;
+import android.graphics.Rect;
+import android.graphics.RectF;
+import android.graphics.drawable.Icon;
 import android.os.Bundle;
+import android.graphics.Color;
 
 import com.facebook.react.bridge.ReactContext;
 import com.wix.reactnativenotifications.core.AppLaunchHelper;
@@ -18,6 +29,14 @@ import com.wix.reactnativenotifications.core.NotificationIntentAdapter;
 import com.wix.reactnativenotifications.core.ProxyService;
 
 import com.wix.reactnativenotifications.R;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.HttpURLConnection;
+import java.net.URL;
 
 import static com.wix.reactnativenotifications.Defs.NOTIFICATION_OPENED_EVENT_NAME;
 import static com.wix.reactnativenotifications.Defs.NOTIFICATION_RECEIVED_EVENT_NAME;
@@ -138,14 +157,71 @@ public class PushNotification implements IPushNotification {
     }
 
     protected Notification.Builder getNotificationBuilder(PendingIntent intent) {
-        return new Notification.Builder(mContext)
+        Notification.Builder notif = new Notification.Builder(mContext)
                 .setContentTitle(mNotificationProps.getTitle())
                 .setContentText(mNotificationProps.getBody())
                 .setSmallIcon(R.drawable.msbuddy_white)
+                .setColor(Color.argb(255,242,70,44))
+                .setLargeIcon(Icon.createWithResource(mContext , R.drawable.ic_launcher))
                 .setContentIntent(intent)
                 .setDefaults(Notification.DEFAULT_ALL)
                 .setAutoCancel(true);
+
+        String sendbird = mNotificationProps.asBundle().getString("sendbird");
+        if(sendbird != null){
+            JSONObject sb = null;
+            try {
+                sb = new JSONObject(sendbird);
+                Bitmap profilePicture = null;
+                profilePicture = getBitmapFromURL(sb.getJSONObject("sender").getString("profile_url"));
+                notif.setLargeIcon(profilePicture);
+
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+
+        }
+        return notif;
     }
+
+    public static Bitmap getBitmapFromURL(String src) {
+        try {
+            URL url = new URL(src);
+            HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+            connection.setDoInput(true);
+            connection.connect();
+            InputStream input = connection.getInputStream();
+            Bitmap myBitmap = BitmapFactory.decodeStream(input);
+            return getCircleBitmap(myBitmap);
+        } catch (IOException e) {
+            // Log exception
+            return null;
+        }
+    }
+
+    private static Bitmap getCircleBitmap(Bitmap bitmap) {
+        final int width = bitmap.getWidth();
+        final int height = bitmap.getHeight();
+        final int color = Color.RED;
+        final Paint paint = new Paint();
+        final Rect rect = new Rect(0, 0, width, height);
+        final float diameter = width > height ? height : width;
+        final Bitmap output = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888);
+        final Canvas canvas = new Canvas(output);
+
+        paint.setAntiAlias(true);
+        canvas.drawARGB(0, 0, 0, 0);
+        paint.setColor(color);
+        canvas.drawCircle((width / 2),(height / 2), (diameter / 2), paint);
+
+        paint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.SRC_IN));
+        canvas.drawBitmap(bitmap, rect, rect, paint);
+
+        bitmap.recycle();
+
+        return output;
+    }
+
 
     protected int postNotification(Notification notification, Integer notificationId) {
         int id = notificationId != null ? notificationId : createNotificationId(notification);
