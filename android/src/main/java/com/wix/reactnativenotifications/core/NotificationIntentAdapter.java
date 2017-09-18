@@ -13,7 +13,8 @@ public class NotificationIntentAdapter {
 
     public static PendingIntent createPendingNotificationIntent(Context appContext, Intent intent, PushNotificationProps notification) {
         intent.putExtra(PUSH_NOTIFICATION_EXTRA_NAME, notification.asBundle());
-        return PendingIntent.getService(appContext, PENDING_INTENT_CODE, intent, PendingIntent.FLAG_ONE_SHOT);
+        int uniqueInt = (int) (System.currentTimeMillis() & 0xfffffff);
+        return PendingIntent.getService(appContext, uniqueInt, intent, PendingIntent.FLAG_ONE_SHOT);
     }
 
     public static Bundle extractPendingNotificationDataFromIntent(Intent intent) {
