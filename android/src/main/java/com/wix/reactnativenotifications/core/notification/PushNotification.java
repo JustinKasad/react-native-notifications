@@ -179,7 +179,9 @@ public class PushNotification implements IPushNotification {
                 sb = new JSONObject(sendbird);
                 Bitmap profilePicture = null;
                 profilePicture = getBitmapFromURL(sb.getJSONObject("sender").getString("profile_url"));
-                notif.setLargeIcon(profilePicture);
+                if(profilePicture != null){
+                    notif.setLargeIcon(profilePicture);
+                }
 
             } catch (JSONException e) {
                 e.printStackTrace();
