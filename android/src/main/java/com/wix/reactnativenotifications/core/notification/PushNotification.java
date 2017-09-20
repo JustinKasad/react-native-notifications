@@ -162,10 +162,15 @@ public class PushNotification implements IPushNotification {
         notif = new Notification.Builder(mContext)
                 .setContentTitle(mNotificationProps.getTitle())
                 .setContentText(mNotificationProps.getBody())
-                .setSmallIcon(R.drawable.msbuddy_white)
                 .setContentIntent(intent)
                 .setDefaults(Notification.DEFAULT_ALL)
                 .setAutoCancel(true);
+
+        try {
+            notif.setSmallIcon(R.drawable.msbuddy_white);
+        } catch (Exception e){
+            e.printStackTrace();
+        }
 
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.M) {
             notif.setColor(Color.argb(255,242,70,44))
