@@ -157,15 +157,20 @@ public class PushNotification implements IPushNotification {
     }
 
     protected Notification.Builder getNotificationBuilder(PendingIntent intent) {
-        Notification.Builder notif = new Notification.Builder(mContext)
+        Notification.Builder notif = null;
+
+        notif = new Notification.Builder(mContext)
                 .setContentTitle(mNotificationProps.getTitle())
                 .setContentText(mNotificationProps.getBody())
                 .setSmallIcon(R.drawable.msbuddy_white)
-                .setColor(Color.argb(255,242,70,44))
-                .setLargeIcon(Icon.createWithResource(mContext , R.drawable.ic_launcher))
                 .setContentIntent(intent)
                 .setDefaults(Notification.DEFAULT_ALL)
                 .setAutoCancel(true);
+
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.M) {
+            notif.setColor(Color.argb(255,242,70,44))
+                    .setLargeIcon(Icon.createWithResource(mContext , R.drawable.ic_launcher));
+        }
 
         String sendbird = mNotificationProps.asBundle().getString("sendbird");
         if(sendbird != null){
@@ -174,7 +179,9 @@ public class PushNotification implements IPushNotification {
                 sb = new JSONObject(sendbird);
                 Bitmap profilePicture = null;
                 profilePicture = getBitmapFromURL(sb.getJSONObject("sender").getString("profile_url"));
-                notif.setLargeIcon(profilePicture);
+                if(profilePicture != null){
+                    notif.setLargeIcon(profilePicture);
+                }
 
             } catch (JSONException e) {
                 e.printStackTrace();
