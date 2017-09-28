@@ -204,7 +204,11 @@ public class PushNotification implements IPushNotification {
             connection.connect();
             InputStream input = connection.getInputStream();
             Bitmap myBitmap = BitmapFactory.decodeStream(input);
-            return getCircleBitmap(myBitmap);
+            if (myBitmap) {
+                return getCircleBitmap(myBitmap);
+            }
+
+            return null;
         } catch (IOException e) {
             // Log exception
             return null;
