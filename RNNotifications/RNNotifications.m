@@ -587,12 +587,12 @@ RCT_EXPORT_METHOD(getInitialNotification:(RCTPromiseResolveBlock) resolve
                     reject:(RCTPromiseRejectBlock) reject)
 {
     NSDictionary* openedRemoteNotification = [RNNotificationsBridgeQueue sharedInstance].openedRemoteNotification;
+    NSDictionary* openedLocalNotification = [RNNotificationsBridgeQueue sharedInstance].openedLocalNotification;
+
     if (openedRemoteNotification) {
       resolve(openedRemoteNotification);
     }
-
-    NSDictionary* openedLocalNotification = [RNNotificationsBridgeQueue sharedInstance].openedLocalNotification;
-    if (openedLocalNotification) {
+    else if (openedLocalNotification) {
       resolve(openedLocalNotification);
     }
 
