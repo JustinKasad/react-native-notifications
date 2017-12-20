@@ -583,22 +583,20 @@ RCT_EXPORT_METHOD(consumeBackgroundQueue)
     }
 }
 
-RCT_EXPORT_METHOD(getNotificationQueueLength:(RCTPromiseResolveBlock) resolve
+RCT_EXPORT_METHOD(getInitialNotification:(RCTPromiseResolveBlock) resolve
                     reject:(RCTPromiseRejectBlock) reject)
 {
-  NSUInteger count = [[RNNotificationsBridgeQueue sharedInstance] notificationQueueLength];
-
   NSDictionary* openedRemoteNotification = [RNNotificationsBridgeQueue sharedInstance].openedRemoteNotification;
   if (openedRemoteNotification) {
-    count++;
+    resolve(@(openedRemoteNotification));
   }
 
   NSDictionary* openedLocalNotification = [RNNotificationsBridgeQueue sharedInstance].openedLocalNotification;
   if (openedLocalNotification) {
-    count++;
+    resolve(@(openedLocalNotification));
   }
 
-  resolve(@(count));
+  resolve(@(nil));
 }
 
 RCT_EXPORT_METHOD(localNotification:(NSDictionary *)notification withId:(NSString *)notificationId)

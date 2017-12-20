@@ -177,8 +177,8 @@ export default class NotificationsIOS {
     NativeRNNotifications.consumeBackgroundQueue();
   }
 
-  static getNotificationQueueLength() {
-    return NativeRNNotifications.getNotificationQueueLength();
+  static getInitialNotification() {
+    return NativeRNNotifications.getInitialNotification();
   }
 
   static log(message: string) {
