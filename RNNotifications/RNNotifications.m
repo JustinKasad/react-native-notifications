@@ -586,17 +586,17 @@ RCT_EXPORT_METHOD(consumeBackgroundQueue)
 RCT_EXPORT_METHOD(getInitialNotification:(RCTPromiseResolveBlock) resolve
                     reject:(RCTPromiseRejectBlock) reject)
 {
-  NSDictionary* openedRemoteNotification = [RNNotificationsBridgeQueue sharedInstance].openedRemoteNotification;
-  if (openedRemoteNotification) {
-    resolve(@(openedRemoteNotification));
-  }
+    NSDictionary* openedRemoteNotification = [RNNotificationsBridgeQueue sharedInstance].openedRemoteNotification;
+    if (openedRemoteNotification) {
+      resolve(openedRemoteNotification);
+    }
 
-  NSDictionary* openedLocalNotification = [RNNotificationsBridgeQueue sharedInstance].openedLocalNotification;
-  if (openedLocalNotification) {
-    resolve(@(openedLocalNotification));
-  }
+    NSDictionary* openedLocalNotification = [RNNotificationsBridgeQueue sharedInstance].openedLocalNotification;
+    if (openedLocalNotification) {
+      resolve(openedLocalNotification);
+    }
 
-  resolve(@(nil));
+    resolve(nil);
 }
 
 RCT_EXPORT_METHOD(localNotification:(NSDictionary *)notification withId:(NSString *)notificationId)
