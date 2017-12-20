@@ -595,8 +595,9 @@ RCT_EXPORT_METHOD(getInitialNotification:(RCTPromiseResolveBlock) resolve
     else if (openedLocalNotification) {
       resolve(openedLocalNotification);
     }
-
-    resolve(nil);
+    else {
+        resolve(nil);
+    }
 }
 
 RCT_EXPORT_METHOD(localNotification:(NSDictionary *)notification withId:(NSString *)notificationId)
