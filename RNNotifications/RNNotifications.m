@@ -583,6 +583,24 @@ RCT_EXPORT_METHOD(consumeBackgroundQueue)
     }
 }
 
+RCT_EXPORT_METHOD(getNotificationQueueLength:(RCTPromiseResolveBlock) resolve
+                    reject:(RCTPromiseRejectBlock) reject)
+{
+  NSUInteger count = [[RNNotificationsBridgeQueue sharedInstance] notificationQueueLength];
+
+  NSDictionary* openedRemoteNotification = [RNNotificationsBridgeQueue sharedInstance].openedRemoteNotification;
+  if (openedRemoteNotification) {
+    count++;
+  }
+
+  NSDictionary* openedLocalNotification = [RNNotificationsBridgeQueue sharedInstance].openedLocalNotification;
+  if (openedLocalNotification) {
+    count++;
+  }
+
+  resolve(@(count));
+}
+
 RCT_EXPORT_METHOD(localNotification:(NSDictionary *)notification withId:(NSString *)notificationId)
 {
     if (SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(@"10")) {

@@ -53,6 +53,16 @@ NSMutableDictionary* actionCompletionHandlers;
     notificationsQueue = nil;
 }
 
+- (NSUInteger) notificationQueueLength
+{
+  NSUInteger count = 0;
+  if (notificationsQueue && notificationsQueue.count != 0) {
+    count = notificationsQueue.count;
+  }
+
+  return count;
+}
+
 - (void)postAction:(NSDictionary *)action withCompletionKey:(NSString *)completionKey andCompletionHandler:(void (^)())completionHandler
 {
     // store completion handler

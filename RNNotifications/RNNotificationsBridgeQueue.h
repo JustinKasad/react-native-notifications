@@ -16,4 +16,6 @@
 
 - (void)completeAction:(NSString *)completionKey;
 
+- (NSUInteger) notificationQueueLength;
+
 @end
