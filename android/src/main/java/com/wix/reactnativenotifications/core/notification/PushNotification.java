@@ -78,7 +78,10 @@ public class PushNotification implements IPushNotification {
 
     @Override
     public void onReceived() throws InvalidNotificationException {
-        postNotification(null);
+        boolean isSilent = Boolean.parseBoolean(mNotificationProps.asBundle().getString("silent"));
+        if(isSilent != true){
+            postNotification(null);
+        }
         notifyReceivedToJS();
     }
 
