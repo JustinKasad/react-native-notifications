@@ -170,13 +170,13 @@ public class PushNotification implements IPushNotification {
                 .setAutoCancel(true);
 
         try {
-            notif.setSmallIcon(R.drawable.msbuddy_white);
+            notif.setSmallIcon(R.drawable.buddy_white);
         } catch (Exception e){
             e.printStackTrace();
         }
 
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.M) {
-            notif.setColor(Color.argb(255,242,70,44))
+            notif.setColor(Color.parseColor(mContext.getResources().getString(R.string.primaryColor)))
                     .setLargeIcon(Icon.createWithResource(mContext , R.drawable.ic_launcher));
         }
 
