@@ -3,6 +3,7 @@ package com.wix.reactnativenotifications.gcm;
 import android.os.Bundle;
 import android.util.Log;
 
+import com.wix.reactnativenotifications.R;
 import com.google.android.gms.gcm.GcmListenerService;
 import com.wix.reactnativenotifications.core.notification.IPushNotification;
 import com.wix.reactnativenotifications.core.notification.PushNotification;
