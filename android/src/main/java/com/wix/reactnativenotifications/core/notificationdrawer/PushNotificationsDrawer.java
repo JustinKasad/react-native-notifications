@@ -62,6 +62,21 @@ public class PushNotificationsDrawer implements IPushNotificationsDrawer {
 
     protected void clearAll() {
         final NotificationManager notificationManager = (NotificationManager) mContext.getSystemService(Context.NOTIFICATION_SERVICE);
-        notificationManager.cancelAll();
+    	if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+        	StatusBarNotification[] notifs = notificationManager.getActiveNotifications();
+
+            	if(notifs.length > 0){
+                	for (StatusBarNotification notif : notifs){
+                    		//Close all notifications except MusicControl
+				if (notif.getTag() != "MusicControl") {
+                        		notificationManager.cancel(notif.getId());
+                    		}
+                	}
+            	}
+        } else {
+            notificationManager.cancelAll();
+        }
+
+
     }
 }
