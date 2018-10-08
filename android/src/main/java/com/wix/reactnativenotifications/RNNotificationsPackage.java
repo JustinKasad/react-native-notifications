@@ -3,7 +3,6 @@ package com.wix.reactnativenotifications;
 import android.app.Application;
 
 import com.facebook.react.ReactPackage;
-import com.facebook.react.bridge.JavaScriptModule;
 import com.facebook.react.bridge.NativeModule;
 import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.uimanager.ViewManager;
@@ -14,8 +13,7 @@ import java.util.List;
 
 public class RNNotificationsPackage implements ReactPackage {
 
-
-    final Application mApplication;
+    private final Application mApplication;
 
     public RNNotificationsPackage(Application application) {
         mApplication = application;

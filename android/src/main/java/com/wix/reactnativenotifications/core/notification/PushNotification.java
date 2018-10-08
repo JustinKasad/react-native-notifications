@@ -1,6 +1,7 @@
 package com.wix.reactnativenotifications.core.notification;
 
 import android.app.Notification;
+import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
@@ -15,6 +16,7 @@ import android.graphics.PorterDuffXfermode;
 import android.graphics.Rect;
 import android.graphics.RectF;
 import android.graphics.drawable.Icon;
+import android.os.Build;
 import android.os.Bundle;
 import android.graphics.Color;
 
@@ -160,43 +162,56 @@ public class PushNotification implements IPushNotification {
     }
 
     protected Notification.Builder getNotificationBuilder(PendingIntent intent) {
-        Notification.Builder notif = null;
 
-        notif = new Notification.Builder(mContext)
+        String CHANNEL_ID = "channel_01";
+        String CHANNEL_NAME = "Channel Name";
+
+        final Notification.Builder notification = new Notification.Builder(mContext)
                 .setContentTitle(mNotificationProps.getTitle())
                 .setContentText(mNotificationProps.getBody())
                 .setContentIntent(intent)
                 .setDefaults(Notification.DEFAULT_ALL)
                 .setAutoCancel(true);
 
-        try {
-            notif.setSmallIcon(R.drawable.buddy_white);
-        } catch (Exception e){
-            e.printStackTrace();
+        // try {
+        //     notif.setSmallIcon(R.drawable.buddy_white);
+        // } catch (Exception e){
+        //     e.printStackTrace();
+        // }
+        //
+        // if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.M) {
+        //     notif.setColor(Color.parseColor(mContext.getResources().getString(R.string.primaryColor)))
+        //             .setLargeIcon(Icon.createWithResource(mContext , R.drawable.ic_launcher));
+        // }
+        //
+        // String sendbird = mNotificationProps.asBundle().getString("sendbird");
+        // if(sendbird != null){
+        //     JSONObject sb = null;
+        //     try {
+        //         sb = new JSONObject(sendbird);
+        //         Bitmap profilePicture = null;
+        //         profilePicture = getBitmapFromURL(sb.getJSONObject("sender").getString("profile_url"));
+        //         if(profilePicture != null){
+        //             notif.setLargeIcon(profilePicture);
+        //         }
+        //
+        //     } catch (JSONException e) {
+        //         e.printStackTrace();
+        //     }
+        //
+        // }
+        // return notif;
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            NotificationChannel channel = new NotificationChannel(CHANNEL_ID,
+                                                                  CHANNEL_NAME,
+                                                                  NotificationManager.IMPORTANCE_DEFAULT);
+            final NotificationManager notificationManager = (NotificationManager) mContext.getSystemService(Context.NOTIFICATION_SERVICE);
+            notificationManager.createNotificationChannel(channel);
+            notification.setChannelId(CHANNEL_ID);
         }
 
-        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.M) {
-            notif.setColor(Color.parseColor(mContext.getResources().getString(R.string.primaryColor)))
-                    .setLargeIcon(Icon.createWithResource(mContext , R.drawable.ic_launcher));
-        }
-
-        String sendbird = mNotificationProps.asBundle().getString("sendbird");
-        if(sendbird != null){
-            JSONObject sb = null;
-            try {
-                sb = new JSONObject(sendbird);
-                Bitmap profilePicture = null;
-                profilePicture = getBitmapFromURL(sb.getJSONObject("sender").getString("profile_url"));
-                if(profilePicture != null){
-                    notif.setLargeIcon(profilePicture);
-                }
-
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
-
-        }
-        return notif;
+        return notification;
     }
 
     public static Bitmap getBitmapFromURL(String src) {
