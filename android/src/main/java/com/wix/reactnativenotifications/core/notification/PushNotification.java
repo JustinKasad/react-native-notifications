@@ -166,41 +166,35 @@ public class PushNotification implements IPushNotification {
         String CHANNEL_ID = "channel_01";
         String CHANNEL_NAME = "Channel Name";
 
-        final Notification.Builder notification = new Notification.Builder(mContext)
+        Notification.Builder notification = new Notification.Builder(mContext)
                 .setContentTitle(mNotificationProps.getTitle())
                 .setContentText(mNotificationProps.getBody())
+                .setSmallIcon(R.drawable.buddy_white)
                 .setContentIntent(intent)
                 .setDefaults(Notification.DEFAULT_ALL)
                 .setAutoCancel(true);
 
-        // try {
-        //     notif.setSmallIcon(R.drawable.buddy_white);
-        // } catch (Exception e){
-        //     e.printStackTrace();
-        // }
-        //
-        // if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.M) {
-        //     notif.setColor(Color.parseColor(mContext.getResources().getString(R.string.primaryColor)))
-        //             .setLargeIcon(Icon.createWithResource(mContext , R.drawable.ic_launcher));
-        // }
-        //
-        // String sendbird = mNotificationProps.asBundle().getString("sendbird");
-        // if(sendbird != null){
-        //     JSONObject sb = null;
-        //     try {
-        //         sb = new JSONObject(sendbird);
-        //         Bitmap profilePicture = null;
-        //         profilePicture = getBitmapFromURL(sb.getJSONObject("sender").getString("profile_url"));
-        //         if(profilePicture != null){
-        //             notif.setLargeIcon(profilePicture);
-        //         }
-        //
-        //     } catch (JSONException e) {
-        //         e.printStackTrace();
-        //     }
-        //
-        // }
-        // return notif;
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.M) {
+            notification.setColor(Color.parseColor(mContext.getResources().getString(R.string.primaryColor)))
+                    .setLargeIcon(Icon.createWithResource(mContext , R.drawable.ic_launcher));
+        }
+
+        String sendbird = mNotificationProps.asBundle().getString("sendbird");
+        if(sendbird != null){
+            JSONObject sb = null;
+            try {
+                sb = new JSONObject(sendbird);
+                Bitmap profilePicture = null;
+                profilePicture = getBitmapFromURL(sb.getJSONObject("sender").getString("profile_url"));
+                if(profilePicture != null){
+                    notification.setLargeIcon(profilePicture);
+                }
+
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+
+        }
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             NotificationChannel channel = new NotificationChannel(CHANNEL_ID,
