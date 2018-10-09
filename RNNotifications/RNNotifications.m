@@ -594,23 +594,6 @@ RCT_EXPORT_METHOD(consumeBackgroundQueue)
     }
 }
 
-RCT_EXPORT_METHOD(getInitialNotification:(RCTPromiseResolveBlock) resolve
-                    reject:(RCTPromiseRejectBlock) reject)
-{
-    NSDictionary* openedRemoteNotification = [RNNotificationsBridgeQueue sharedInstance].openedRemoteNotification;
-    NSDictionary* openedLocalNotification = [RNNotificationsBridgeQueue sharedInstance].openedLocalNotification;
-
-    if (openedRemoteNotification) {
-      resolve(openedRemoteNotification);
-    }
-    else if (openedLocalNotification) {
-      resolve(openedLocalNotification);
-    }
-    else {
-        resolve(nil);
-    }
-}
-
 RCT_EXPORT_METHOD(localNotification:(NSDictionary *)notification withId:(NSString *)notificationId)
 {
     if (SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(@"10")) {
